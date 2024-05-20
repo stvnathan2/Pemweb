@@ -1,5 +1,6 @@
 <?php
-require 'config.php';
+include("conn.php");
+$conn = connection();
 
 $day = isset($_GET['day']) ? intval($_GET['day']) : 0;
 $month = isset($_GET['month']) ? intval($_GET['month']) : date('m');

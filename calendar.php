@@ -1,5 +1,6 @@
 <?php
-require 'conn.php';
+include("conn.php");
+$conn = connection();
 
 function getTransactions($conn, $month) {
     $stmt = $conn->prepare('SELECT date, type, amount FROM daily_expenses WHERE MONTH(date) = ?');
