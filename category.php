@@ -88,7 +88,7 @@ $conn->close();
             <div class="form-group mr-2">
                 <label for="category" class="mr-2">Pilih Kategori:</label>
                 <select name="category" id="category" class="form-control" required>
-                    <option value="">Pilih Kategori</option>
+                    <option value="">.....</option>
                     <option value="Rumah">Rumah</option>
                     <option value="Transportasi">Transportasi</option>
                     <option value="Makanan">Makanan</option>
@@ -102,6 +102,10 @@ $conn->close();
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Tampilkan</button>
+        </form>
+
+        <form method="post" action="category.php" class="form-inline mb-4">
+            <button type="submit" class="btn btn-info mr-2">Tampilkan Semua Kategori</button>
         </form>
 
         <div class="table-container">
