@@ -13,11 +13,11 @@ if (isset($_GET['day'], $_GET['month'], $_GET['year'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    echo "<h3>Transaksi pada tanggal $date</h3>";
+    echo "<h4>Transaksi pada tanggal $date</h4>";
     if ($result->num_rows > 0) {
-        echo "<ul>";
+        echo "<ul class='list-group'>";
         while ($row = $result->fetch_assoc()) {
-            echo "<li>{$row['type']}: Rp{$row['amount']} - {$row['description']}</li>";
+            echo "<li class='list-group-item'>" . ucfirst($row['type']) . ": Rp" . number_format($row['amount'], 2) . "<br>" . $row['description'] . "</li>";
         }
         echo "</ul>";
     } else {

@@ -21,28 +21,50 @@ while ($row = $transactions->fetch_assoc()) {
 
 function generateCalendar($calendar, $month, $year) {
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-    echo '<table border="1">';
-    echo '<tr>';
+    $firstDayOfMonth = date('w', strtotime("$year-$month-01"));
+    
+    echo '<div class="table-responsive"><table class="table table-bordered">';
+    echo '<thead class="thead-light"><tr>';
+    echo '<th>Minggu</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th>';
+    echo '</tr></thead>';
+    echo '<tbody><tr>';
+    
+    // Empty cells before the first day of the month
+    for ($i = 0; $i < $firstDayOfMonth; $i++) {
+        echo '<td></td>';
+    }
+
     for ($day = 1; $day <= $daysInMonth; $day++) {
-        echo '<td onclick="showTransactions(' . $day . ')">' . $day;
+        $currentDay = ($day + $firstDayOfMonth - 1) % 7;
+        echo '<td class="calendar-day" onclick="showTransactions(' . $day . ')">' . $day;
         if (isset($calendar[$day])) {
             foreach ($calendar[$day] as $transaction) {
-                echo '<br>' . $transaction['type'] . ': ' . $transaction['amount'];
+                echo '<br><span class="badge badge-' . ($transaction['type'] === 'pemasukan' ? 'success' : 'danger') . '">' . $transaction['type'] . ': ' . $transaction['amount'] . '</span>';
             }
         }
         echo '</td>';
-        if ($day % 7 == 0) {
+        if ($currentDay == 6) {
             echo '</tr><tr>';
         }
     }
-    echo '</tr>';
-    echo '</table>';
+    
+    // Empty cells after the last day of the month
+    $remainingDays = (7 - (($daysInMonth + $firstDayOfMonth) % 7)) % 7;
+    for ($i = 0; $i < $remainingDays; $i++) {
+        echo '<td></td>';
+    }
+    
+    echo '</tr></tbody>';
+    echo '</table></div>';
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Kalender Keuangan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
         function showTransactions(day) {
             var month = document.getElementById('month').value;
@@ -57,29 +79,42 @@ function generateCalendar($calendar, $month, $year) {
             xhr.send();
         }
     </script>
+    <style>
+        .calendar-day {
+            cursor: pointer;
+        }
+        .calendar-day:hover {
+            background-color: #f0f8ff;
+        }
+    </style>
 </head>
 <body>
-    <h2>Kalender Keuangan Bulan Ini</h2>
-    <form method="GET" action="calendar.php">
-        <label for="month">Pilih Bulan:</label>
-        <select id="month" name="month" onchange="this.form.submit()">
-            <?php for ($m = 1; $m <= 12; $m++): ?>
-                <option value="<?php echo $m; ?>" <?php if ($m == $current_month) echo 'selected'; ?>>
-                    <?php echo date('F', mktime(0, 0, 0, $m, 1)); ?>
-                </option>
-            <?php endfor; ?>
-        </select>
-        <label for="year">Pilih Tahun:</label>
-        <select id="year" name="year" onchange="this.form.submit()">
-            <?php for ($y = 2020; $y <= date('Y'); $y++): ?>
-                <option value="<?php echo $y; ?>" <?php if ($y == $current_year) echo 'selected'; ?>>
-                    <?php echo $y; ?>
-                </option>
-            <?php endfor; ?>
-        </select>
-    </form>
-    <?php generateCalendar($calendar, $current_month, $current_year); ?>
-    <h3>Detail Transaksi</h3>
-    <div id="transactions">Klik pada tanggal untuk melihat detail transaksi.</div>
+    <div class="container">
+        <h2 class="my-4">Kalender Keuangan Bulan Ini</h2>
+        <form method="GET" action="calendar.php" class="form-inline mb-4">
+            <label for="month" class="mr-2">Pilih Bulan:</label>
+            <select id="month" name="month" class="form-control mr-2" onchange="this.form.submit()">
+                <?php for ($m = 1; $m <= 12; $m++): ?>
+                    <option value="<?php echo $m; ?>" <?php if ($m == $current_month) echo 'selected'; ?>>
+                        <?php echo date('F', mktime(0, 0, 0, $m, 1)); ?>
+                    </option>
+                <?php endfor; ?>
+            </select>
+            <label for="year" class="mr-2">Pilih Tahun:</label>
+            <select id="year" name="year" class="form-control" onchange="this.form.submit()">
+                <?php for ($y = 2020; $y <= date('Y'); $y++): ?>
+                    <option value="<?php echo $y; ?>" <?php if ($y == $current_year) echo 'selected'; ?>>
+                        <?php echo $y; ?>
+                    </option>
+                <?php endfor; ?>
+            </select>
+        </form>
+        <?php generateCalendar($calendar, $current_month, $current_year); ?>
+        <h3>Detail Transaksi</h3>
+        <div id="transactions">Klik pada tanggal untuk melihat detail transaksi.</div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
