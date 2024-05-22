@@ -28,8 +28,8 @@
                     <h1>MoneyMastery Datang Membantu Mengelola Keuangan Anda</h1>
                     <p>Manajemen Uang Yang Efektif Membuat Hidup Lebih Tenang</p>
                     <div class="cta-buttons">
-                        <a href="#masuk" class="cta-button">Login</a>
-                        <a href="#daftar" class="cta-button secondary">Daftar</a>
+                        <a href="login.php" class="cta-button">Masuk</a>
+                        <a href="regist.php" class="cta-button secondary">Daftar</a>
                     </div>
                 </div>
                 <div class="hero-image">
