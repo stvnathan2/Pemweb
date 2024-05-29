@@ -63,8 +63,26 @@ function generateCalendar($calendar, $month, $year) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Kalender Keuangan</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        <?php include 'styles.css'; ?>
+        <?php include 'styles.css'; // Menggunakan file CSS yang Anda sediakan ?>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        h2, h3 {
+            font-family: 'Roboto', sans-serif;
+        }
+        .calendar-day {
+            cursor: pointer;
+            position: relative;
+        }
+        .calendar-day:hover {
+            background-color: #f0f8ff;
+        }
+        .table-custom th, .table-custom td {
+            vertical-align: middle;
+            text-align: center;
+        }
     </style>
     <script>
         function showTransactions(day) {
@@ -80,19 +98,6 @@ function generateCalendar($calendar, $month, $year) {
             xhr.send();
         }
     </script>
-    <style>
-        .calendar-day {
-            cursor: pointer;
-            position: relative;
-        }
-        .calendar-day:hover {
-            background-color: #f0f8ff;
-        }
-        .table-custom th, .table-custom td {
-            vertical-align: middle;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
     <div class="wrapper">

@@ -2,28 +2,45 @@
 include("conn.php");
 $conn = connection();
 
-if (isset($_GET['day'], $_GET['month'], $_GET['year'])) {
+if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
     $day = intval($_GET['day']);
     $month = intval($_GET['month']);
     $year = intval($_GET['year']);
 
-    $date = "$year-$month-$day";
-    $stmt = $conn->prepare('SELECT type, amount, description FROM daily_expenses WHERE date = ?');
-    $stmt->bind_param('s', $date);
+    $stmt = $conn->prepare('SELECT * FROM daily_expenses WHERE DAY(date) = ? AND MONTH(date) = ? AND YEAR(date) = ?');
+    $stmt->bind_param('iii', $day, $month, $year);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    echo "<h4>Transaksi pada tanggal $date</h4>";
     if ($result->num_rows > 0) {
-        echo "<ul class='list-group'>";
+        echo '<div class="table-responsive">';
+        echo '<table class="table table-bordered">';
+        echo '<thead class="thead-dark">';
+        echo '<tr>';
+        echo '<th>Deskripsi</th>';
+        echo '<th>Jumlah</th>';
+        echo '<th>Kategori</th>';
+        echo '<th>Tipe</th>';
+        echo '<th>Metode Pembayaran</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
         while ($row = $result->fetch_assoc()) {
-            echo "<li class='list-group-item'>" . ucfirst($row['type']) . ": Rp" . number_format($row['amount'], 2) . "<br>" . $row['description'] . "</li>";
+            echo '<tr>';
+            echo '<td>' . $row['description'] . '</td>';
+            echo '<td>' . $row['amount'] . '</td>';
+            echo '<td>' . $row['category'] . '</td>';
+            echo '<td>' . $row['type'] . '</td>';
+            echo '<td>' . $row['payment_method'] . '</td>';
+            echo '</tr>';
         }
-        echo "</ul>";
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
     } else {
-        echo "<p>Tidak ada transaksi pada tanggal ini.</p>";
+        echo 'Tidak ada transaksi untuk tanggal ini.';
     }
 } else {
-    echo "<p>Data tidak valid.</p>";
+    echo 'Tanggal tidak valid.';
 }
 ?>
