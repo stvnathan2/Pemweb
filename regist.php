@@ -4,15 +4,15 @@ include('koneksiuser.php');
 $status = '';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $namalengkap = $_POST['namalengkap'];
     $username = $_POST['username'];
+    $namalengkap = $_POST['namalengkap'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     // query   
 
-    $query = "INSERT INTO user (namalengkap, username, email, password) 
-    VALUES ('$namalengkap', '$username', '$email', '$password')";
+    $query = "INSERT INTO user (username, namalengkap, email, password) 
+    VALUES ('$username', '$namalengkap', '$email', '$password')";
 
     // Eksekusi Query
 

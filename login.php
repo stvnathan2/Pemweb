@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'koneksiuser.php';
 $conn = connection();
 
@@ -14,8 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($conn, $query_sql);
 
     if (mysqli_num_rows($result) > 0) {
-    header("Location: home.php");
-    exit();
+        $_SESSION['username'] = $username; // Menyimpan sesi username
+        header("Location: home.php");
+        exit();
     } else {
         $login_failed = true;
     }

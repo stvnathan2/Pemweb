@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +31,7 @@
             
             <p><a href="#" class="btn-add"><span class="icon"><ion-icon name="calculator"></ion-icon></span><b>Kalkulator</b></a></p>
             
-            <p><a href="#" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pengaturan Akun</b></a></p>
+            <p><a href="account.php" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pengaturan Akun</b></a></p>
     </div>
 
     <script src="script.js"></script>
