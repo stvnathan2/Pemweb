@@ -8,24 +8,20 @@
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">Money Mastery</div>
-            <nav>
-                <ul>
-                    <li><a href="#tips">Tips</a></li>
-                    <li><a href="#konsultasi">Konsultasi</a></li>
-                    <li><a href="#tentang">Tentang</a></li>
-                    <li><a href="#bantuan">Bantuan</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h2 class="logo">Money Mastery</h2>
+        <nav class="navigation">
+            <a href="#tips">Tips</a>
+            <a href="#konsultasi">Konsultasi</a>
+            <a href="#tentang">Tentang</a>
+            <a href="#bantuan">Bantuan</a>
+        </nav>
     </header>
 
     <main>
-        <div class="container">
+        <div class="container-index">
             <section class="hero">
                 <div class="hero-content">
-                    <h1>MoneyMastery Datang Membantu Mengelola Keuangan Anda</h1>
+                    <h1>Money Mastery Datang Membantu Mengelola Keuangan Anda</h1>
                     <p>Manajemen Uang Yang Efektif Membuat Hidup Lebih Tenang</p>
                     <div class="cta-buttons">
                         <a href="login.php" class="cta-button">Masuk</a>

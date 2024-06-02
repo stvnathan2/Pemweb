@@ -1,30 +1,40 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+
 include("conn.php");
 $conn = connection();
-
+$username = $_SESSION['username'];
 $expenses = [];
 $pieData = [];
 $totalExpenses = 0;
 $totalIncome = 0;
+$difference = 0;
 $averageDailyExpenses = 0;
 $highestExpenseCategory = "";
+$lowestExpenseCategory = "";
 $highestExpenseAmount = 0;
+$lowestExpenseAmount = 10000000000000;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $month = $_POST["month"];
     $year = $_POST["year"];
     
-    $sql = "SELECT category, SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' GROUP BY category";
+    $sql = "SELECT category, SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' AND username = ? GROUP BY category";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $month, $year);
+    $stmt->bind_param("iis", $month, $year, $username);
     $stmt->execute();
     $result = $stmt->get_result();
     $pieData = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     
-    $sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran'";
+    $sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' AND username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $month, $year);
+    $stmt->bind_param("iis", $month, $year, $username);
     $stmt->execute();
     $result = $stmt->get_result();
     $expenses = $result->fetch_all(MYSQLI_ASSOC);
@@ -36,14 +46,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $highestExpenseAmount = $row['total'];
             $highestExpenseCategory = $row['category'];
         }
+        if ($row['total'] < $lowestExpenseAmount) {
+            $lowestExpenseAmount = $row['total'];
+            $lowestExpenseCategory = $row['category'];
+        }
     }
     
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
     $averageDailyExpenses = $totalExpenses / $daysInMonth;
 
-    $sql = "SELECT SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pemasukan'";
+    $sql = "SELECT SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pemasukan' AND username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $month, $year);
+    $stmt->bind_param("iis", $month, $year, $username);
     $stmt->execute();
     $result = $stmt->get_result();
     $income = $result->fetch_all(MYSQLI_ASSOC);
@@ -52,11 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($income as $row) {
         $totalIncome += $row['total'];
     }
+    $difference = $totalIncome - $totalExpenses;
 }
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,6 +78,8 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Expenses</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
@@ -80,39 +96,53 @@ $conn->close();
             ]);
 
             var options = {
-                title: 'Pengeluaran Bulanan Berdasarkan Kategori',
-                is3D: false
+                is3D: false,
+                pieSliceText: 'percentage',
+                height: 300,
+                chartArea: {
+                    top: 10,
+                    bottom: 10,
+                    width: '100%',
+                    height: '100%'
+                },
+                legend: {
+                    alignment: 'center',
+                    position: 'right',
+                    textStyle: {
+                    fontSize: 25,
+                    color: '#333'
+                    }
+                },
+                pieStartAngle: 45,
+                backgroundColor: 'transparent'
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            google.visualization.events.addListener(chart, 'select', function() {
+                var selectedItem = chart.getSelection()[0];
+                if (selectedItem) {
+                    var category = data.getValue(selectedItem.row, 0);
+                    window.location.href = 'category.php?category=' + encodeURIComponent(category) + '&month=<?php echo $month; ?>&year=<?php echo $year; ?>';
+                }
+            });
+
             chart.draw(data, options);
-        }
+        }   
     </script>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .table-container {
-            margin-top: 20px;
-        }
-        #piechart {
-            width: 100%;
-            height: 500px;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 <body>
+    <header>
+        <a href="home.php" class="logo">Money Mastery</a>
+        <nav class="navigation">
+            <a href="#tips">Tips</a>
+            <a href="#konsultasi">Konsultasi</a>
+            <a href="#tentang">Tentang</a>
+            <a href="#bantuan">Bantuan</a>
+        </nav>
+    </header>
+    
     <div class="container">
-        <h2 class="my-4">Daily Expenses</h2>
         <form method="post" action="summary.php" class="form-inline">
             <div class="form-group mb-2">
                 <label for="month" class="mr-2">Bulan:</label>
@@ -140,12 +170,14 @@ $conn->close();
         </form>
 
         <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($expenses)): ?>
-            <div id="piechart"></div>
+            <div class="chart-container">
+                <div id="piechart"></div>
+            </div>
             <div class="row mb-4">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Total Pemasukan</h5>
+                            <h5 class="card-title">Pemasukan <i class="fa fa-arrow-down"></i></h5>
                             <p class="card-text">Rp <?php echo number_format($totalIncome, 2); ?></p>
                         </div>
                     </div>
@@ -153,8 +185,16 @@ $conn->close();
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Total Pengeluaran</h5>
+                            <h5 class="card-title">Pengeluaran <i class="fa fa-arrow-up"></i></h5>
                             <p class="card-text">Rp <?php echo number_format($totalExpenses, 2); ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Selisih</h5>
+                            <p class="card-text">Rp <?php echo number_format($difference, 2); ?> / <?php echo number_format($totalExpenses / $totalIncome * 100, 0); ?>% dari pemasukan</p>
                         </div>
                     </div>
                 </div>
@@ -174,38 +214,14 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="table-container">
-                <table class="table table-striped table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Amount</th>
-                            <th>Type</th>
-                            <th>Category</th>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Payment Method</th>
-                            <th>Account</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($expenses as $expense): ?>
-                            <tr>
-                                <td><?php echo $expense["id"]; ?></td>
-                                <td><?php echo $expense["amount"]; ?></td>
-                                <td><?php echo $expense["type"]; ?></td>
-                                <td><?php echo $expense["category"]; ?></td>
-                                <td><?php echo date('d', strtotime($expense["date"])); ?></td>
-                                <td><?php echo $expense["description"]; ?></td>
-                                <td><?php echo $expense["payment_method"]; ?></td>
-                                <td><?php echo $expense["account"]; ?></td>
-                                <td><a href="detail.php?id=<?php echo $expense["id"]; ?>" class="btn btn-info btn-sm">Detail</a></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kategori Pengeluaran Terkecil</h5>
+                            <p class="card-text"><?php echo $lowestExpenseCategory; ?>: Rp <?php echo number_format($lowestExpenseAmount, 2); ?></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php elseif ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
             <p>Tidak ada data ditemukan untuk bulan dan tahun yang dipilih.</p>
