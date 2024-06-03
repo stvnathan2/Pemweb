@@ -33,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (mysqli_query($conn, $query)) {
-        $message = "Profile updated successfully!";
+        $message = "Profil telah sukses diperbarui!";
     } else {
-        $message = "Error updating profile: " . mysqli_error($conn);
+        $message = "Profil gagal diperbarui: " . mysqli_error($conn);
     }
 }
 
@@ -57,35 +57,24 @@ $user = mysqli_fetch_assoc($result);
     <div class="image">
         <?php if ($user['foto_profil'] != "") { echo "<img src='".$user['foto_profil']."'>"; } ?>
     </div>
-    <div class="edit-container">
-        <form id="uploadForm" action="account.php" method="post" enctype="multipart/form-data">
-            <button type="button" id="editBtn" class="editBtn">
-                <label for="foto_profil" class="custom-file-upload">Edit</label>
-                <input type="file" id="foto_profil" name="foto_profil" style="display: none;">
-            </button>
-            <input type="hidden" name="namalengkap" value="<?php echo $user['namalengkap']; ?>">
-            <input type="hidden" name="email" value="<?php echo $user['email']; ?>">
-            <input type="hidden" name="jenis_kelamin" value="<?php echo $user['jenis_kelamin']; ?>">
-        </form>
-    </div>
     <div class="container">
-        <h2>Update Profile</h2>
+        <h2>Profil</h2>
         <?php if ($message != "") { echo "<p class='message'>$message</p>"; } ?>
-        <form action="account.php" method="post">
+        <form action="account.php" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label>Username:</label>
+                <label>Username</label>
                 <input type="text" name="username" value="<?php echo $user['username']; ?>" readonly>
             </div>
             <div class="form-group">
-                <label>Full Name:</label>
+                <label>Nama Lengkap</label>
                 <input type="text" name="namalengkap" value="<?php echo $user['namalengkap']; ?>" required>
             </div>
             <div class="form-group">
-                <label>Email:</label>
+                <label>Alamat Email</label>
                 <input type="email" name="email" value="<?php echo $user['email']; ?>" required>
             </div>
             <div class="form-group">
-                <label>Gender:</label>
+                <label>Jenis Kelamin</label>
                 <label>
                     <input type="radio" name="jenis_kelamin" value="Laki-laki" <?php if ($user['jenis_kelamin'] == 'Laki-laki') echo 'checked'; ?>> Laki-laki
                 </label>
@@ -94,18 +83,14 @@ $user = mysqli_fetch_assoc($result);
                 </label>
             </div>
             <div class="form-group">
-                <button type="submit">Update Profile</button>
+                <label>Foto Profil</label>
+                <input type="file" name="foto_profil">
+            </div>
+            <div class="form-group">
+                <button type="submit">Perbarui Profil</button>
                 <a href="home.php" class="back-btn">Kembali</a>
             </div>
         </form>
     </div>
-    <script>
-        document.getElementById('editBtn').onclick = function() {
-            document.getElementById('foto_profil').click();
-        };
-        document.getElementById('foto_profil').onchange = function () {
-            document.getElementById('uploadForm').submit();
-        };
-    </script>
 </body>
 </html>
