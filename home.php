@@ -23,7 +23,7 @@ if (!isset($_SESSION['username'])) {
     </div>
     <h1>Selamat Datang, User</h1>
     <div class="menu-box">
-            <p><a href="transactions.php" class="btn-view"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pencatatan Keuangan</b></a></p>
+            <p><a href="input.php" class="btn-view"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pencatatan Keuangan</b></a></p>
             
             <p><a href="calendar.php" class="btn-add"><span class="icon"><ion-icon name="calculator"></ion-icon></span><b>Kalender Keuangan</b></a></p>
             
@@ -32,6 +32,8 @@ if (!isset($_SESSION['username'])) {
             <p><a href="#" class="btn-add"><span class="icon"><ion-icon name="calculator"></ion-icon></span><b>Kalkulator</b></a></p>
             
             <p><a href="account.php" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pengaturan Akun</b></a></p>
+
+            <p><a href="index.php" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Keluar Akun</b></a></p>
     </div>
 
     <script src="script.js"></script>
