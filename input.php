@@ -24,11 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
     $conn->close();
     
-    // Handle file upload
     if (isset($_FILES['file'])) {
         $file = $_FILES['file'];
         
-        // Define upload directory
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0777, true);
@@ -38,32 +36,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $uploadOk = 1;
         $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         
-        // Check if file already exists
         if (file_exists($target_file)) {
             echo "Sorry, file already exists.<br>";
             $uploadOk = 0;
         }
         
-        // Check file size (e.g., max 2MB)
         if ($file["size"] > 2000000) {
             echo "Sorry, your file is too large.<br>";
             $uploadOk = 0;
         }
         
-        // Allow certain file formats (e.g., jpg, png, pdf)
         if($fileType != "jpg" && $fileType != "png" && $fileType != "pdf" ) {
             echo "Sorry, only JPG, PNG & PDF files are allowed.<br>";
             $uploadOk = 0;
         }
         
-        // Check if $uploadOk is set to 0 (error occurred)
         if ($uploadOk == 0) {
             echo "Sorry, your file was not uploaded.<br>";
         } else {
             if (move_uploaded_file($file["tmp_name"], $target_file)) {
                 echo "The file ". htmlspecialchars(basename($file["name"])). " has been uploaded.<br>";
 
-                // Save file path to database
                 $conn = connection();
                 $stmt = $conn->prepare("INSERT INTO receipts (file_path) VALUES (?)");
                 $stmt->bind_param("s", $target_file);
