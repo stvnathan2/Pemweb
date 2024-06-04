@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    background: url(bglogin.jpg) no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 800px;
+    margin: auto;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #8e44ad;
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.table tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.table tr:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.no-transactions {
+    text-align: center;
+    font-size: 1.2em;
+    color: white;
+    background-color: rgba(255, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+}

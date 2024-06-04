@@ -65,7 +65,7 @@ function generateCalendar($calendar, $month, $year) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        <?php include 'styles.css';?>
+        <?php include 'calendar.css';?>
         body {
             font-family: 'Poppins', sans-serif;
         }
