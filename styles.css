@@ -288,3 +288,44 @@ button[type="submit"]:hover {
     font-weight: bold;
     color: #8e44ad; 
 }
+
+.tips-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.tips-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tips-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.tips-item:last-child {
+    border-bottom: none;
+}
+
+.tips-content {
+    flex: 1;
+}
+
+.tips-item h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.tips-item p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+}
