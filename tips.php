@@ -13,7 +13,7 @@
             <a href="index.php">Beranda</a>
             <a href="tips.php">Tips</a>
             <a href="konsultasi.php">Konsultasi</a>
-            <a href="tentang.php">Tentang</a>
+            <a href="about.php">Tentang</a>
             <a href="bantuan.php">Bantuan</a>
         </nav>
     </header>
