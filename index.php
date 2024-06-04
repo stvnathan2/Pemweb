@@ -10,9 +10,10 @@
     <header>
         <h2 class="logo">Money Mastery</h2>
         <nav class="navigation">
-            <a href="#tips">Tips</a>
+            <a href="index.php">Beranda</a>
+            <a href="tips.php">Tips</a>
             <a href="#konsultasi">Konsultasi</a>
-            <a href="#tentang">Tentang</a>
+            <a href="about.php">Tentang</a>
             <a href="#bantuan">Bantuan</a>
         </nav>
     </header>
