@@ -23,6 +23,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $stmt->close();
     $conn->close();
+    
+    // Handle file upload
+    if (isset($_FILES['file'])) {
+        $file = $_FILES['file'];
+        
+        // Define upload directory
+        $target_dir = "uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+        
+        $target_file = $target_dir . basename($file["name"]);
+        $uploadOk = 1;
+        $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.<br>";
+            $uploadOk = 0;
+        }
+        
+        // Check file size (e.g., max 2MB)
+        if ($file["size"] > 2000000) {
+            echo "Sorry, your file is too large.<br>";
+            $uploadOk = 0;
+        }
+        
+        // Allow certain file formats (e.g., jpg, png, pdf)
+        if($fileType != "jpg" && $fileType != "png" && $fileType != "pdf" ) {
+            echo "Sorry, only JPG, PNG & PDF files are allowed.<br>";
+            $uploadOk = 0;
+        }
+        
+        // Check if $uploadOk is set to 0 (error occurred)
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.<br>";
+        } else {
+            if (move_uploaded_file($file["tmp_name"], $target_file)) {
+                echo "The file ". htmlspecialchars(basename($file["name"])). " has been uploaded.<br>";
+
+                // Save file path to database
+                $conn = connection();
+                $stmt = $conn->prepare("INSERT INTO receipts (file_path) VALUES (?)");
+                $stmt->bind_param("s", $target_file);
+                if ($stmt->execute()) {
+                    echo "File record saved successfully<br>";
+                } else {
+                    echo "Error: " . $stmt->error . "<br>";
+                }
+                $stmt->close();
+                $conn->close();
+            } else {
+                echo "Sorry, there was an error uploading your file.<br>";
+            }
+        }
+    }
 }
 ?>
 
@@ -51,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="container">
             <section class="input-form">
                 <h2>Input Pemasukan dan Pengeluaran</h2>
-                <form action="input_expense.php" method="POST">
+                <form action="input.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="date">Tanggal</label>
                         <input type="date" id="date" name="date" required>
@@ -78,6 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="form-group">
                         <label for="description">Keterangan</label>
                         <textarea id="description" name="description"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="file">Upload Receipt</label>
+                        <input type="file" id="file" name="file">
                     </div>
                     
                     <button type="submit">Submit</button>
