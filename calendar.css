@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: url(bglogin.jpg) no-repeat center center fixed;
     background-size: cover;
     margin: 0;
@@ -23,8 +23,14 @@ body {
     max-height: 90vh;
 }
 
+
+h2, h3 {
+    font-family: 'Roboto', sans-serif;
+}
+
 .table-responsive {
     overflow-x: auto;
+    margin-top: 20px;
 }
 
 .table {
@@ -64,4 +70,16 @@ body {
     background-color: rgba(255, 0, 0, 0.7);
     padding: 10px;
     border-radius: 10px;
+}
+
+.calendar-day {
+    cursor: pointer;
+    position: relative;
+}
+.calendar-day:hover {
+    background-color: #f0f8ff;
+}
+.table-custom th, .table-custom td {
+    vertical-align: middle;
+    text-align: center;
 }
