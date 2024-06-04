@@ -92,15 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">Money Mastery</div>
-            <nav>
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="input_expense.php">Input Data</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h2 class="logo">Money Mastery</h2>
+        <nav class="navigation">
+            <a href="#tips">Tips</a>
+            <a href="#konsultasi">Konsultasi</a>
+            <a href="#tentang">Tentang</a>
+            <a href="#bantuan">Bantuan</a>
+        </nav>
     </header>
 
     <main>
@@ -135,10 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="description">Keterangan</label>
                         <textarea id="description" name="description"></textarea>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label for="file">Upload Receipt</label>
-                        <input type="file" id="file" name="file">
+                        <label for="file">Upload Receipt:</label>
+                        <input type="file" id="file" name="file" required>
                     </div>
                     
                     <button type="submit">Submit</button>
@@ -152,3 +150,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </footer>
 </body>
 </html>
+
