@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($conn, $query_sql);
 
     if (mysqli_num_rows($result) > 0) {
-        $_SESSION['username'] = $username; // Menyimpan sesi username
+        $_SESSION['username'] = $username;
         header("Location: home.php");
         exit();
     } else {
@@ -62,10 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="password" name="password" required>
                     <label>Kata Sandi</label>
                 </div>
-                <!-- <div class="remember-forgot">
-                    <label><input type="checkbox">Ingat saya</label>
-                    <a href="#">Lupa kata sandi?</a>
-                </div> -->
                 <button type="submit" class="btn">Masuk</button>
                 <div class="login-register">
                     <p>Belum punya akun? <a href="regist.php" class="register-link">Daftar</a></p>
