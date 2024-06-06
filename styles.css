@@ -16,7 +16,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url(bglogin.jpg) no-repeat;
+    background: url(bghome.png) no-repeat;
     background-size: cover;
     background-position: center;
     flex-direction: column;
@@ -57,12 +57,17 @@ header{
         1px -1px 0 #4645459a,
         -1px 1px 0 #4645459a,
         1px 1px 0 #4645459a;
-    font-size: 24px;
+    font-size: 30px;
     color: white !important;
     Text-Decoration: None !important; 
 }
 
 .navigation a {
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
     position: relative;
     font-size: 16px;
     color: white;
@@ -328,4 +333,78 @@ button[type="submit"]:hover {
     font-size: 14px;
     line-height: 1.6;
     color: #666;
+}
+
+.inline-form-group {
+    display: inline-block !important;
+    margin-top: 20px;
+}
+
+.form-control {
+    font-size: 1.5rem;
+    color: #4b0082;
+    border: 1px solid #4b0082;
+}
+
+.form-inline {
+    gap: 20px;
+    display: flex;
+    justify-content: space-around;
+    justify-self: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.calculator {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.calculator button {
+    font-size: 1.5rem;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    background-color: #dda0dd !important;
+    color: #4b0082 !important;
+}
+
+.calculator button:hover {
+    background-color: #ba55d3;
+    color: white;
+}
+
+.calculator button:active {
+    background-color: #dda0dd !important;
+    color: #4b0082 !important;
+    transform: translateY(4px);
+}
+
+.calculator button.btn-primary {
+    background-color: #ba55d3;
+}
+
+.calculator button.btn-primary:hover {
+    background-color: #9932cc;
+}
+
+.btn-success {
+    background-color: #9370db;
+    border: 1px solid #4b0082;
+}
+
+.btn-success:hover {
+    background-color: #7b68ee;
+    color: white;
+}
+
+.alert-success {
+    font-size: 1.2rem;
+    margin-left: 60px;
+    margin-right: 60px;
+    background-color: white;
+    color: #4b0082;
 }
