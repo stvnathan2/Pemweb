@@ -4,7 +4,7 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
-include("conn.php");
+include("koneksiuser.php");
 $conn = connection();
 $username = $_SESSION['username'];
 $query = "SELECT user FROM db_users WHERE username='$username'";
