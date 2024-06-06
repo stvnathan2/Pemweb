@@ -76,9 +76,9 @@ header {
     background: #ba55d37c;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px #6a1b9a;
+    box-shadow: 0 0 10px #6a1b9a; /* Update the box-shadow color */
     width: 80%;
-    max-width: 800px;
+    max-width: 1000px;
     overflow-y: auto;
     max-height: 90vh;
 }
@@ -107,7 +107,12 @@ h2, h3 {
 }
 
 .table th {
-    background-color: #8e44ad;
+    background-color: #6a1b9a; /* Update the header background color */
+    color: white;
+}
+
+.table-custom thead th {
+    background-color: #6a1b9a;
     color: white;
 }
 
@@ -120,11 +125,11 @@ h2, h3 {
 }
 
 .table tr:nth-child(even) {
-    background-color: #6a1b9a;
+    background-color: #ae2bff;
 }
 
 .table tr:nth-child(odd) {
-    background-color: #732d91;
+    background-color: #bb43ee;
 }
 
 .table tr:hover {
@@ -146,7 +151,7 @@ h2, h3 {
 }
 
 .calendar-day:hover {
-    background-color: #f0f8ff;
+    background-color: #e88bff;
 }
 
 .table-custom th, .table-custom td {
