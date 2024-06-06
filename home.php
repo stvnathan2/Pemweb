@@ -4,6 +4,22 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+include("conn.php");
+$conn = connection();
+$username = $_SESSION['username'];
+$query = "SELECT user FROM db_users WHERE username='$username'";
+$result = $conn->query($query);
+
+// Periksa apakah query berhasil dieksekusi
+if ($result) {
+    // Ambil nama pengguna dari hasil query
+    $row = $result->fetch_assoc();
+    $nama_pengguna = $row['username'];
+} else {
+    $nama_pengguna = "User";
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +37,7 @@ if (!isset($_SESSION['username'])) {
     <div class="header">
         <h3>MoneyMastery</h3>
     </div>
-    <h1>Selamat Datang, User</h1>
+    <h1>Selamat Datang, <?php echo $username; ?></h1>
     <div class="menu-box">
             <p><a href="input.php" class="btn-view"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pencatatan Keuangan</b></a></p>
             

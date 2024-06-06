@@ -1,0 +1,80 @@
+body{
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url(bghome.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
+
+.header{
+    padding-top: 30px;
+}
+
+h3{
+    background: linear-gradient(90deg, #AA60DB, #5B3475);
+    padding: 7px;
+    margin:0 auto;
+    width: 140px;
+    color: white;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+h1{
+    background: linear-gradient(90deg, #AA60DB, #5B3475);
+    font-family: Arial, sans-serif;
+    font-size: 3em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+body p b{
+    font-size: larger;
+    text-align: center;
+    display: block;
+    margin: 0px auto;
+    padding: 20px 0;
+    width: 350px;
+    max-width: 500px;
+    /* background-color: #E9E9E9; */
+    color: white;
+}
+
+.menu-box{
+    margin: 0 auto;
+    display: block;
+    width: 350px;
+    max-width: 500px;
+}
+
+.icon{
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: white;
+    line-height: 57px;
+}
+
+a{
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    background: linear-gradient(90deg, #AA60DB, #5B3475);
+    border-radius: 8px;
+    transition: background-color 0.5s ease;
+}
+
+a:hover{
+    background: linear-gradient(90deg, #a489c9, #d7bee7);
+}
+
+body p b a:hover{
+    color: #5B3475;
+}

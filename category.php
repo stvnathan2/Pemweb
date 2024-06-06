@@ -7,14 +7,18 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 6;
 $offset = ($page - 1) * $limit;
 
+// Tambahkan penanganan untuk parameter bulan dan tahun
+$selected_month = isset($_GET['month']) ? $_GET['month'] : date('n'); 
+$selected_year = isset($_GET['year']) ? $_GET['year'] : date('Y'); 
+
 $expenses = [];
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && $selected_category) {
-    $sql = "SELECT * FROM daily_expenses WHERE category = ? LIMIT ? OFFSET ?";
+    $sql = "SELECT * FROM daily_expenses WHERE category = ? AND MONTH(date) = ? AND YEAR(date) = ? LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("sii", $selected_category, $limit, $offset);
+        $stmt->bind_param("siiii", $selected_category, $selected_month, $selected_year, $limit, $offset);
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             $expenses = $result->fetch_all(MYSQLI_ASSOC);
@@ -29,10 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $selected_category) {
         $message = "Terjadi kesalahan dalam menyiapkan statement.";
     }
 } else {
-    $sql = "SELECT * FROM daily_expenses LIMIT ? OFFSET ?";
+    $sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->bind_param("iiii", $selected_month, $selected_year, $limit, $offset);
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             $expenses = $result->fetch_all(MYSQLI_ASSOC);
@@ -45,10 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $selected_category) {
     }
 }
 
-$total_sql = $selected_category ? "SELECT COUNT(*) as count FROM daily_expenses WHERE category = ?" : "SELECT COUNT(*) as count FROM daily_expenses";
+$total_sql = $selected_category ? "SELECT COUNT(*) as count FROM daily_expenses WHERE category = ? AND MONTH(date) = ? AND YEAR(date) = ?" : "SELECT COUNT(*) as count FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ?";
 $stmt = $conn->prepare($total_sql);
 if ($selected_category) {
-    $stmt->bind_param("s", $selected_category);
+    $stmt->bind_param("siii", $selected_category, $selected_month, $selected_year);
+} else {
+    $stmt->bind_param("ii", $selected_month, $selected_year);
 }
 $stmt->execute();
 $result = $stmt->get_result();
@@ -65,6 +71,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kategori Pengeluaran</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="category.css">
     <style>
         .container {
             margin-top: 20px;
@@ -139,13 +146,13 @@ $conn->close();
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <?php if ($page > 1): ?>
-                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page - 1; ?>">Previous</a></li>
+                            <li class ="page-item"><a class="page-link" href="?page=<?php echo $page - 1; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>">Previous</a></li>
                         <?php endif; ?>
                         <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>"><a class="page-link" href="?page=<?php echo $i; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>"><?php echo $i; ?></a></li>
                         <?php endfor; ?>
                         <?php if ($page < $total_pages): ?>
-                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a></li>
+                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page + 1; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>">Next</a></li>
                         <?php endif; ?>
                     </ul>
                 </nav>
