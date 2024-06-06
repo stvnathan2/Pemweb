@@ -26,7 +26,7 @@ if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
             if ($result->num_rows > 0) {
                 echo '<div class="table-responsive">';
                 echo '<table class="table table-bordered">';
-                echo '<thead class="thead-dark">';
+                echo '<thead class="thead-light">';
                 echo '<tr>';
                 echo '<th>Deskripsi</th>';
                 echo '<th>Jumlah</th>';
