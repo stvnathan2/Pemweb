@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Mastery - Tips</title>
+    <title>Konsultasi Money Mastery</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
         <h2 class="logo">Money Mastery</h2>
         <nav class="navigation">
             <a href="index.php">Beranda</a>
-            <a href="tips.php">Tips</a>
+            <a href="tips.php" class="active">Tips</a>
             <a href="konsultasi.php">Konsultasi</a>
             <a href="about.php">Tentang</a>
             <a href="bantuan.php">Bantuan</a>
