@@ -76,7 +76,7 @@ header {
     background: #ba55d37c;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px #6a1b9a; /* Update the box-shadow color */
+    box-shadow: 0 0 10px #6a1b9a; 
     width: 80%;
     max-width: 1000px;
     overflow-y: auto;
@@ -107,7 +107,7 @@ h2, h3 {
 }
 
 .table th {
-    background-color: #6a1b9a; /* Update the header background color */
+    background-color: #6a1b9a; 
     color: white;
 }
 
