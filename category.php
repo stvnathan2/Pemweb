@@ -8,8 +8,8 @@ $limit = 6;
 $offset = ($page - 1) * $limit;
 
 // Tambahkan penanganan untuk parameter bulan dan tahun
-$selected_month = isset($_GET['month']) ? $_GET['month'] : date('n'); // Ambil bulan dari parameter GET, default ke bulan saat ini jika tidak disediakan
-$selected_year = isset($_GET['year']) ? $_GET['year'] : date('Y'); // Ambil tahun dari parameter GET, default ke tahun saat ini jika tidak disediakan
+$selected_month = isset($_GET['month']) ? $_GET['month'] : date('n'); 
+$selected_year = isset($_GET['year']) ? $_GET['year'] : date('Y'); 
 
 $expenses = [];
 $message = "";
@@ -71,6 +71,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kategori Pengeluaran</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="category.css">
     <style>
         .container {
             margin-top: 20px;
