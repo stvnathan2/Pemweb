@@ -28,9 +28,14 @@ header{
 }
 
 .logo{
-    font-size: 24px;
-    color: white;
-    user-select: none;
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
+    font-size: 30px;
+    color: white !important;
+    Text-Decoration: None !important; 
 }
 
 .navigation a{

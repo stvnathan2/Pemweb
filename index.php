@@ -8,9 +8,8 @@
 </head>
 <body>
     <header>
-        <h2 class="logo">Money Mastery</h2>
+        <a href="index.php" class="logo">Money Mastery</a>
         <nav class="navigation">
-            <a href="index.php" class="active">Beranda</a>
             <a href="tips.php">Tips</a>
             <a href="konsultasi.php">Konsultasi</a>
             <a href="about.php">Tentang</a>
