@@ -7,17 +7,6 @@ if (!isset($_SESSION['username'])) {
 include("koneksiuser.php");
 $conn = connection();
 $username = $_SESSION['username'];
-$query = "SELECT user FROM db_users WHERE username='$username'";
-$result = $conn->query($query);
-
-// Periksa apakah query berhasil dieksekusi
-if ($result) {
-    // Ambil nama pengguna dari hasil query
-    $row = $result->fetch_assoc();
-    $nama_pengguna = $row['username'];
-} else {
-    $nama_pengguna = "User";
-}
 
 $conn->close();
 ?>
@@ -45,11 +34,11 @@ $conn->close();
             
             <p><a href="summary.php" class="btn-view"><span class="icon"><ion-icon name="bar-chart"></ion-icon></span><b>Analisis Keuangan</b></a></p>
             
-            <p><a href="#" class="btn-add"><span class="icon"><ion-icon name="calculator"></ion-icon></span><b>Kalkulator</b></a></p>
+            <p><a href="calculator.php" class="btn-add"><span class="icon"><ion-icon name="calculator"></ion-icon></span><b>Kalkulator</b></a></p>
             
             <p><a href="account.php" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Pengaturan Akun</b></a></p>
 
-            <p><a href="index.php" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Keluar Akun</b></a></p>
+            <p><a href="logout.php" class="btn-add"><span class="icon"><ion-icon name="create"></ion-icon></span><b>Keluar Akun</b></a></p>
     </div>
 
     <script src="script.js"></script>
