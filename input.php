@@ -1,5 +1,20 @@
 <?php
+session_start(); 
 include 'koneksiuser.php';
+
+function connection() {
+    $host = 'localhost';
+    $user = 'root';
+    $pass = '';
+    $db = 'db_users';
+    $conn = new mysqli($host, $user, $pass, $db);
+
+    if ($conn->connect_error) {
+        die('Connection failed: ' . $conn->connect_error);
+    }
+
+    return $conn;
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date = $_POST['date'];
@@ -7,13 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category = $_POST['category'];
     $amount = $_POST['amount'];
     $description = $_POST['description'];
+    $user_id = $_SESSION['user_id']; 
 
     $conn = connection();
     
-    $sql = "INSERT INTO daily_expenses (amount, type, category, date, description) 
-            VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO daily_expenses (amount, type, category, date, description, user_id) 
+            VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("dssss", $amount, $type, $category, $date, $description);
+    $stmt->bind_param("dssssi", $amount, $type, $category, $date, $description, $user_id);
 
     if ($stmt->execute()) {
         echo "Data berhasil disimpan.";
@@ -58,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "The file ". htmlspecialchars(basename($file["name"])). " has been uploaded.<br>";
 
                 $conn = connection();
-                $stmt = $conn->prepare("INSERT INTO receipts (file_path) VALUES (?)");
-                $stmt->bind_param("s", $target_file);
+                $stmt = $conn->prepare("INSERT INTO receipts (user_id, file_path) VALUES (?, ?)");
+                $stmt->bind_param("is", $user_id, $target_file);
                 if ($stmt->execute()) {
                     echo "File record saved successfully<br>";
                 } else {
@@ -143,4 +159,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </footer>
 </body>
 </html>
-
