@@ -80,9 +80,9 @@ body p b a:hover{
 }
 
 .pagination .page-link {
-    color: white; /* Ubah warna tulisan pagination */
+    color: white;
 }
 
 .pagination .page-link:hover {
-    color: #5B3475; /* Warna tulisan saat di-hover */
+    color: #5B3475;
 }
