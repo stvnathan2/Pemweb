@@ -1,31 +1,29 @@
 <?php
+session_start();
 include("conn.php");
 $conn = connection();
 
-$selected_category = isset($_POST['category']) ? $_POST['category'] : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 6;
 $offset = ($page - 1) * $limit;
 
-// Tambahkan penanganan untuk parameter bulan dan tahun
-$selected_month = isset($_GET['month']) ? $_GET['month'] : date('n'); 
-$selected_year = isset($_GET['year']) ? $_GET['year'] : date('Y'); 
+$selected_month = isset($_GET['month']) ? $_GET['month'] : date('n');
+$selected_year = isset($_GET['year']) ? $_GET['year'] : date('Y');
+$selected_category = isset($_GET['category']) ? $_GET['category'] : '';
 
+$username = $_SESSION['username'];
 $expenses = [];
 $message = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && $selected_category) {
-    $sql = "SELECT * FROM daily_expenses WHERE category = ? AND MONTH(date) = ? AND YEAR(date) = ? LIMIT ? OFFSET ?";
+if ($selected_category) {
+    $sql = "SELECT * FROM daily_expenses WHERE category = ? AND MONTH(date) = ? AND YEAR(date) = ? AND username = ? LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("siiii", $selected_category, $selected_month, $selected_year, $limit, $offset);
+        $stmt->bind_param("siisii", $selected_category, $selected_month, $selected_year, $username, $limit, $offset);
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             $expenses = $result->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
-            if (empty($expenses)) {
-                $message = "Belum ada yang pakai kategori ini.";
-            }
         } else {
             $message = "Terjadi kesalahan saat mengambil data.";
         }
@@ -33,10 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $selected_category) {
         $message = "Terjadi kesalahan dalam menyiapkan statement.";
     }
 } else {
-    $sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? LIMIT ? OFFSET ?";
+    $sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND username = ? LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("iiii", $selected_month, $selected_year, $limit, $offset);
+        $stmt->bind_param("iisii", $selected_month, $selected_year, $username, $limit, $offset);
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             $expenses = $result->fetch_all(MYSQLI_ASSOC);
@@ -49,12 +47,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $selected_category) {
     }
 }
 
-$total_sql = $selected_category ? "SELECT COUNT(*) as count FROM daily_expenses WHERE category = ? AND MONTH(date) = ? AND YEAR(date) = ?" : "SELECT COUNT(*) as count FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ?";
-$stmt = $conn->prepare($total_sql);
 if ($selected_category) {
-    $stmt->bind_param("siii", $selected_category, $selected_month, $selected_year);
+    $total_sql = "SELECT COUNT(*) as count FROM daily_expenses WHERE category = ? AND MONTH(date) = ? AND YEAR(date) = ? AND username = ?";
+    $stmt = $conn->prepare($total_sql);
+    $stmt->bind_param("siis", $selected_category, $selected_month, $selected_year, $username);
 } else {
-    $stmt->bind_param("ii", $selected_month, $selected_year);
+    $total_sql = "SELECT COUNT(*) as count FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND username = ?";
+    $stmt = $conn->prepare($total_sql);
+    $stmt->bind_param("iis", $selected_month, $selected_year, $username);
 }
 $stmt->execute();
 $result = $stmt->get_result();
@@ -91,28 +91,26 @@ $conn->close();
             </div>
         <?php endif; ?>
 
-        <form method="post" action="category.php" class="form-inline mb-4">
+        <form method="get" action="category.php" class="form-inline mb-4">
+            <input type="hidden" name="month" value="<?php echo $selected_month; ?>">
+            <input type="hidden" name="year" value="<?php echo $selected_year; ?>">
             <div class="form-group mr-2">
                 <label for="category" class="mr-2">Pilih Kategori:</label>
                 <select name="category" id="category" class="form-control" required>
-                    <option value="">.....</option>
-                    <option value="Rumah">Rumah</option>
-                    <option value="Transportasi">Transportasi</option>
-                    <option value="Makanan">Makanan</option>
-                    <option value="Kesehatan">Kesehatan</option>
-                    <option value="Pendidikan">Pendidikan</option>
-                    <option value="Hiburan">Hiburan</option>
-                    <option value="Pakaian">Pakaian</option>
-                    <option value="Komunikasi">Komunikasi</option>
-                    <option value="Keuangan">Keuangan</option>
-                    <option value="Darurat">Darurat</option>
+                    <option value="">Semua</option>
+                    <option value="gaji" <?php echo ($selected_category == 'gaji') ? 'selected' : ''; ?>>Gaji</option>
+                    <option value="transportasi" <?php echo ($selected_category == 'transportasi') ? 'selected' : ''; ?>>Transportasi</option>
+                    <option value="Makanan" <?php echo ($selected_category == 'Makanan') ? 'selected' : ''; ?>>Makanan</option>
+                    <option value="Kesehatan" <?php echo ($selected_category == 'Kesehatan') ? 'selected' : ''; ?>>Kesehatan</option>
+                    <option value="Pendidikan" <?php echo ($selected_category == 'Pendidikan') ? 'selected' : ''; ?>>Pendidikan</option>
+                    <option value="Hiburan" <?php echo ($selected_category == 'Hiburan') ? 'selected' : ''; ?>>Hiburan</option>
+                    <option value="Pakaian" <?php echo ($selected_category == 'Pakaian') ? 'selected' : ''; ?>>Pakaian</option>
+                    <option value="Komunikasi" <?php echo ($selected_category == 'Komunikasi') ? 'selected' : ''; ?>>Komunikasi</option>
+                    <option value="Keuangan" <?php echo ($selected_category == 'Keuangan') ? 'selected' : ''; ?>>Keuangan</option>
+                    <option value="Darurat" <?php echo ($selected_category == 'Darurat') ? 'selected' : ''; ?>>Darurat</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Tampilkan</button>
-        </form>
-
-        <form method="post" action="category.php" class="form-inline mb-4">
-            <button type="submit" class="btn btn-info mr-2">Tampilkan Semua Kategori</button>
         </form>
 
         <div class="table-container">
@@ -146,18 +144,18 @@ $conn->close();
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <?php if ($page > 1): ?>
-                            <li class ="page-item"><a class="page-link" href="?page=<?php echo $page - 1; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page - 1; ?>&category=<?php echo $selected_category; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>">Previous</a></li>
                         <?php endif; ?>
                         <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>"><a class="page-link" href="?page=<?php echo $i; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>"><?php echo $i; ?></a></li>
+                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>"><a class="page-link" href="?page=<?php echo $i; ?>&category=<?php echo $selected_category; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>"><?php echo $i; ?></a></li>
                         <?php endfor; ?>
                         <?php if ($page < $total_pages): ?>
-                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page + 1; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>">Next</a></li>
+                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page + 1; ?>&category=<?php echo $selected_category; ?>&month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>">Next</a></li>
                         <?php endif; ?>
                     </ul>
                 </nav>
-            <?php elseif ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
-                <p>Belum ada yang pakai kategori ini.</p>
+            <?php elseif ($_SERVER["REQUEST_METHOD"] == "GET" && empty($selected_category)): ?>
+                <p>Belum ada data untuk bulan dan tahun ini.</p>
             <?php endif; ?>
         </div>
     </div>
