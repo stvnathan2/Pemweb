@@ -78,3 +78,11 @@ a:hover{
 body p b a:hover{
     color: #5B3475;
 }
+
+.pagination .page-link {
+    color: white; /* Ubah warna tulisan pagination */
+}
+
+.pagination .page-link:hover {
+    color: #5B3475; /* Warna tulisan saat di-hover */
+}
