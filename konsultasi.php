@@ -18,13 +18,15 @@
     </header>
 
     <main>
-        <div class="container">
-            <section class="about-section">
-                <h2 class="section-title">Konsultasi Money Mastery</h2>
-                <p class="about-description">Anda memiliki pertanyaan atau masalah tentang pengelolaan keuangan? Kami siap membantu Anda! Silakan hubungi kami melalui nomor di bawah ini:</p>
-                <div class="contact-info">
-                    <p>Jika Anda mengalami masalah atau memiliki pertanyaan, jangan ragu untuk menghubungi kami:</p>
-                    <p>Nomor Telepon: <a href="tel:089123123123">089123123123</a></p>
+        <div class="container-index">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Konsultasi Money Mastery</h1>
+                    <p class="about-description">Anda memiliki pertanyaan atau masalah tentang pengelolaan keuangan? Kami siap membantu Anda! Silakan hubungi kami melalui nomor di bawah ini:</p>
+                    <div class="contact-info">
+                        <p>Jika Anda mengalami masalah atau memiliki pertanyaan, jangan ragu untuk menghubungi kami:</p>
+                        <p>Nomor Telepon: <a href="wa.me/089123123123">089123123123</a></p>
+                    </div>
                 </div>
             </section>
         </div>
