@@ -112,6 +112,7 @@ $conn->close();
         </div>
         <button type="submit" class="btn btn-primary mr-2">Tampilkan</button>
         <a href="category.php?month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>" class="btn btn-info">Tampilkan Semua Data</a>
+        <a href="summary.php" class="btn btn-secondary ml-2">Back</a>
         </form>
 
 
