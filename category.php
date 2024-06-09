@@ -92,26 +92,28 @@ $conn->close();
         <?php endif; ?>
 
         <form method="get" action="category.php" class="form-inline mb-4">
-            <input type="hidden" name="month" value="<?php echo $selected_month; ?>">
-            <input type="hidden" name="year" value="<?php echo $selected_year; ?>">
-            <div class="form-group mr-2">
-                <label for="category" class="mr-2">Pilih Kategori:</label>
-                <select name="category" id="category" class="form-control" required>
-                    <option value="">Semua</option>
-                    <option value="rumah" <?php echo ($selected_category == 'rumah') ? 'selected' : ''; ?>>Rumah</option>
-                    <option value="transportasi" <?php echo ($selected_category == 'transportasi') ? 'selected' : ''; ?>>Transportasi</option>
-                    <option value="Makanan" <?php echo ($selected_category == 'Makanan') ? 'selected' : ''; ?>>Makanan</option>
-                    <option value="Kesehatan" <?php echo ($selected_category == 'Kesehatan') ? 'selected' : ''; ?>>Kesehatan</option>
-                    <option value="Pendidikan" <?php echo ($selected_category == 'Pendidikan') ? 'selected' : ''; ?>>Pendidikan</option>
-                    <option value="Hiburan" <?php echo ($selected_category == 'Hiburan') ? 'selected' : ''; ?>>Hiburan</option>
-                    <option value="Pakaian" <?php echo ($selected_category == 'Pakaian') ? 'selected' : ''; ?>>Pakaian</option>
-                    <option value="Komunikasi" <?php echo ($selected_category == 'Komunikasi') ? 'selected' : ''; ?>>Komunikasi</option>
-                    <option value="Keuangan" <?php echo ($selected_category == 'Keuangan') ? 'selected' : ''; ?>>Keuangan</option>
-                    <option value="Darurat" <?php echo ($selected_category == 'Darurat') ? 'selected' : ''; ?>>Darurat</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Tampilkan</button>
+        <input type="hidden" name="month" value="<?php echo $selected_month; ?>">
+        <input type="hidden" name="year" value="<?php echo $selected_year; ?>">
+        <div class="form-group mr-2">
+            <label for="category" class="mr-2">Pilih Kategori:</label>
+            <select name="category" id="category" class="form-control" required>
+                <option value="">...</option>
+                <option value="rumah" <?php echo ($selected_category == 'rumah') ? 'selected' : ''; ?>>Rumah</option>
+                <option value="transportasi" <?php echo ($selected_category == 'transportasi') ? 'selected' : ''; ?>>Transportasi</option>
+                <option value="Makan" <?php echo ($selected_category == 'Makan') ? 'selected' : ''; ?>>Makan</option>
+                <option value="Kesehatan" <?php echo ($selected_category == 'Kesehatan') ? 'selected' : ''; ?>>Kesehatan</option>
+                <option value="Pendidikan" <?php echo ($selected_category == 'Pendidikan') ? 'selected' : ''; ?>>Pendidikan</option>
+                <option value="Hiburan" <?php echo ($selected_category == 'Hiburan') ? 'selected' : ''; ?>>Hiburan</option>
+                <option value="Pakaian" <?php echo ($selected_category == 'Pakaian') ? 'selected' : ''; ?>>Pakaian</option>
+                <option value="Komunikasi" <?php echo ($selected_category == 'Komunikasi') ? 'selected' : ''; ?>>Komunikasi</option>
+                <option value="Keuangan" <?php echo ($selected_category == 'Keuangan') ? 'selected' : ''; ?>>Keuangan</option>
+                <option value="Gaji" <?php echo ($selected_category == 'Gaji') ? 'selected' : ''; ?>>Gaji</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mr-2">Tampilkan</button>
+        <a href="category.php?month=<?php echo $selected_month; ?>&year=<?php echo $selected_year; ?>" class="btn btn-info">Tampilkan Semua Data</a>
         </form>
+
 
         <div class="table-container">
             <?php if (!empty($expenses)): ?>
