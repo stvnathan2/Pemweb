@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("koneksiuser.php");
 $conn = connection();
 
@@ -97,7 +98,7 @@ $conn->close();
                 <label for="category" class="mr-2">Pilih Kategori:</label>
                 <select name="category" id="category" class="form-control" required>
                     <option value="">Semua</option>
-                    <option value="gaji" <?php echo ($selected_category == 'gaji') ? 'selected' : ''; ?>>Gaji</option>
+                    <option value="rumah" <?php echo ($selected_category == 'rumah') ? 'selected' : ''; ?>>Rumah</option>
                     <option value="transportasi" <?php echo ($selected_category == 'transportasi') ? 'selected' : ''; ?>>Transportasi</option>
                     <option value="Makanan" <?php echo ($selected_category == 'Makanan') ? 'selected' : ''; ?>>Makanan</option>
                     <option value="Kesehatan" <?php echo ($selected_category == 'Kesehatan') ? 'selected' : ''; ?>>Kesehatan</option>
