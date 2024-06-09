@@ -1,6 +1,5 @@
 <?php
-session_start();
-include("conn.php");
+include("koneksiuser.php");
 $conn = connection();
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-include("conn.php");
+include("koneksiuser.php");
 $conn = connection();
 $username = $_SESSION['username'];
 $expenses = [];
@@ -135,10 +135,10 @@ $conn->close();
     <header>
         <a href="home.php" class="logo">Money Mastery</a>
         <nav class="navigation">
-            <a href="#tips">Tips</a>
-            <a href="#konsultasi">Konsultasi</a>
-            <a href="#tentang">Tentang</a>
-            <a href="#bantuan">Bantuan</a>
+            <a href="tips.php">Tips</a>
+            <a href="konsultasi.php">Konsultasi</a>
+            <a href="about.php">Tentang</a>
+            <a href="bantuan.php">Bantuan</a>
         </nav>
     </header>
     

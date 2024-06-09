@@ -1,5 +1,5 @@
 <?php
-include("conn.php");
+include("koneksiuser.php");
 $conn = connection();
 
 function getTransactions($conn, $month, $year) {
@@ -64,26 +64,7 @@ function generateCalendar($calendar, $month, $year) {
     <title>Kalender Keuangan</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        <?php include 'calendar.css';?>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        h2, h3 {
-            font-family: 'Roboto', sans-serif;
-        }
-        .calendar-day {
-            cursor: pointer;
-            position: relative;
-        }
-        .calendar-day:hover {
-            background-color: #f0f8ff;
-        }
-        .table-custom th, .table-custom td {
-            vertical-align: middle;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="calendar.css">
     <script>
         function showTransactions(day) {
             var month = document.getElementById('month').value;
@@ -100,6 +81,15 @@ function generateCalendar($calendar, $month, $year) {
     </script>
 </head>
 <body>
+<header>
+        <a href="home.php" class="logo">Money Mastery</a>
+        <nav class="navigation">
+            <a href="tips.php">Tips</a>
+            <a href="konsultasi.php">Konsultasi</a>
+            <a href="about.php">Tentang</a>
+            <a href="bantuan.php">Bantuan</a>
+        </nav>
+    </header>
     <div class="wrapper">
         <div class="form-box">
             <h2>Kalender Keuangan Bulan Ini</h2>

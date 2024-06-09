@@ -5,7 +5,7 @@ function connection()
     $server = 'localhost';
     $user = 'root';
     $password = '';
-    $name = 'db_users';
+    $name = 'pemweb';
 
     $conn = mysqli_connect($server, $user, $password, $name);
 

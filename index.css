@@ -1,0 +1,307 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url(bglogin.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container-index {
+    margin: 0 auto;
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    margin-top: 80px;
+    flex: 1;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+}
+
+.logo{
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
+    font-size: 30px;
+    color: white !important;
+    Text-Decoration: None !important; 
+}
+
+.navigation a {
+    position: relative;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 40px;
+}
+
+.navigation .btnLogin-popup{
+    width: 100px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: white;
+    font-weight: bold;
+    margin-left: 40px;
+}
+
+.navigation a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s;
+}
+
+.navigation a:hover::after{
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.navigation .btnLogin-popup:hover{
+    background: white;
+    color: #8e44ad;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 0;
+    color: white;
+    text-align: left;
+}
+
+.hero-content {
+    width: 50%;
+    padding: 20px;
+}
+
+.hero h1 {
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
+    font-size: 48px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.hero p {
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.cta-buttons {
+    margin-top: 20px;
+}
+
+.cta-button {
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.cta-button.secondary {
+    background-color: white;
+    color: #8e44ad;
+}
+
+.cta-button:hover {
+    background-color: #ecf0f1;
+    color: #8e44ad;
+}
+
+.hero-image {
+    width: 50%;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content, .hero-image {
+        width: 100%;
+    }
+
+    .hero-content {
+        padding: 20px 0;
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #8e44ad;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button[type="submit"]:hover {
+    background-color: #732d91;
+}
+
+.form-group input[type="file"] {
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.section-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.about-description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #fff; 
+}
+
+.navigation a.active {
+    font-weight: bold;
+    color: #8e44ad; 
+}
+
+.tips-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.tips-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tips-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.tips-item:last-child {
+    border-bottom: none;
+}
+
+.tips-content {
+    flex: 1;
+}
+
+.tips-item h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.tips-item p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+}

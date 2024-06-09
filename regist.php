@@ -38,13 +38,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 <body>
     <header>
-        <h2 class="logo">Logo</h2>
+        <a href="index.php" class="logo">Money Mastery</a>
         <nav class="navigation">
-            <a href="#tips">Tips</a>
-            <a href="#konsultasi">Konsultasi</a>
-            <a href="#tentang">Tentang</a>
-            <a href="#bantuan">Bantuan</a>
-            <button id="loginBtn" class="btnLogin-popup">Masuk</button>
+            <a href="tips.php">Tips</a>
+            <a href="konsultasi.php">Konsultasi</a>
+            <a href="about.php">Tentang</a>
+            <a href="bantuan.php">Bantuan</a>
         </nav>
     </header>
 
