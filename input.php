@@ -2,20 +2,6 @@
 session_start(); 
 include 'koneksiuser.php';
 
-function connection() {
-    $host = 'localhost';
-    $user = 'root';
-    $pass = '';
-    $db = 'db_users';
-    $conn = new mysqli($host, $user, $pass, $db);
-
-    if ($conn->connect_error) {
-        die('Connection failed: ' . $conn->connect_error);
-    }
-
-    return $conn;
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date = $_POST['date'];
     $type = $_POST['type'];
