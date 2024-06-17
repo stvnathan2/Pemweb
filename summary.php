@@ -19,55 +19,68 @@ $highestExpenseCategory = "";
 $lowestExpenseCategory = "";
 $highestExpenseAmount = 0;
 $lowestExpenseAmount = 10000000000000;
+$currentMonth = date('n');
+$currentYear = date('Y');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $month = $_POST["month"];
     $year = $_POST["year"];
-    
-    $sql = "SELECT category, SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' AND username = ? GROUP BY category";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iis", $month, $year, $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $pieData = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-    
-    $sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' AND username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iis", $month, $year, $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $expenses = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-
-    foreach ($pieData as $row) {
-        $totalExpenses += $row['total'];
-        if ($row['total'] > $highestExpenseAmount) {
-            $highestExpenseAmount = $row['total'];
-            $highestExpenseCategory = $row['category'];
-        }
-        if ($row['total'] < $lowestExpenseAmount) {
-            $lowestExpenseAmount = $row['total'];
-            $lowestExpenseCategory = $row['category'];
-        }
-    }
-    
-    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-    $averageDailyExpenses = $totalExpenses / $daysInMonth;
-
-    $sql = "SELECT SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pemasukan' AND username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iis", $month, $year, $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $income = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-
-    foreach ($income as $row) {
-        $totalIncome += $row['total'];
-    }
-    $difference = $totalIncome - $totalExpenses;
+} else {
+    $month = $currentMonth;
+    $year = $currentYear;
 }
+
+$sql = "SELECT category, SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' AND username = ? GROUP BY category";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iis", $month, $year, $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$pieData = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pengeluaran' AND username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iis", $month, $year, $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$expenses = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+foreach ($pieData as $row) {
+    $totalExpenses += $row['total'];
+    if ($row['total'] > $highestExpenseAmount) {
+        $highestExpenseAmount = $row['total'];
+        $highestExpenseCategory = $row['category'];
+    }
+    if ($row['total'] < $lowestExpenseAmount) {
+        $lowestExpenseAmount = $row['total'];
+        $lowestExpenseCategory = $row['category'];
+    }
+}
+
+$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+$averageDailyExpenses = $totalExpenses / $daysInMonth;
+
+$sql = "SELECT SUM(amount) as total FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND type = 'pemasukan' AND username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iis", $month, $year, $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$income = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+foreach ($income as $row) {
+    $totalIncome += $row['total'];
+}
+$difference = $totalIncome - $totalExpenses;
+
+$sql = "SELECT * FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ? AND username = ? ORDER BY date";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iis", $month, $year, $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$allData = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 
 $conn->close();
 ?>
@@ -128,7 +141,11 @@ $conn->close();
             });
 
             chart.draw(data, options);
-        }   
+        }
+
+        function autoSubmitForm() {
+            document.getElementById('filterForm').submit();
+        }
     </script>
 </head>
 <body>
@@ -143,33 +160,32 @@ $conn->close();
     </header>
     
     <div class="container">
-        <form method="post" action="summary.php" class="form-inline">
+        <form method="post" action="summary.php" class="form-inline" id="filterForm">
             <div class="form-group mb-2">
                 <label for="month" class="mr-2">Bulan:</label>
-                <select name="month" id="month" class="form-control mr-2" required>
-                    <option value="">Pilih Bulan</option>
+                <select name="month" id="month" class="form-control mr-2" required onchange="autoSubmitForm()">
                     <?php
                     for ($m = 1; $m <= 12; $m++) {
-                        echo '<option value="' . $m . '">' . date('F', mktime(0, 0, 0, $m, 10)) . '</option>';
+                        $selected = ($m == $month) ? 'selected' : '';
+                        echo '<option value="' . $m . '" ' . $selected . '>' . date('F', mktime(0, 0, 0, $m, 10)) . '</option>';
                     }
                     ?>
                 </select>
             </div>
             <div class="form-group mb-2">
                 <label for="year" class="mr-2">Tahun:</label>
-                <select name="year" id="year" class="form-control mr-2" required>
-                    <option value="">Pilih Tahun</option>
+                <select name="year" id="year" class="form-control mr-2" required onchange="autoSubmitForm()">
                     <?php
                     for ($y = date("Y"); $y >= 2000; $y--) {
-                        echo '<option value="' . $y . '">' . $y . '</option>';
+                        $selected = ($y == $year) ? 'selected' : '';
+                        echo '<option value="' . $y . '" ' . $selected . '>' . $y . '</option>';
                     }
                     ?>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Tampilkan</button>
         </form>
 
-        <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($expenses)): ?>
+        <?php if (!empty($expenses)): ?>
             <div class="chart-container">
                 <div id="piechart"></div>
             </div>
@@ -194,7 +210,11 @@ $conn->close();
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Selisih</h5>
-                            <p class="card-text">Rp <?php echo number_format($difference, 2); ?> / <?php echo number_format($totalExpenses / $totalIncome * 100, 0); ?>% dari pemasukan</p>
+                            <?php if ($totalIncome == 0): ?>
+                                <p class="card-text">Rp <?php echo number_format($difference, 2); ?></p>
+                            <?php else: ?>
+                                <p class="card-text">Rp <?php echo number_format($difference, 2); ?> / <?php echo number_format($totalExpenses / $totalIncome * 100, 0); ?>% dari pemasukan</p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -223,8 +243,17 @@ $conn->close();
                     </div>
                 </div>
             </div>
-        <?php elseif ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
-            <p>Tidak ada data ditemukan untuk bulan dan tahun yang dipilih.</p>
+
+            <div class="text-center mb-4">
+                <form action="download.php" method="get">
+                    <input type="hidden" name="month" value="<?php echo $month; ?>">
+                    <input type="hidden" name="year" value="<?php echo $year; ?>">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-download"></i> Download Data</button>
+                </form>
+            </div>
+
+        <?php else: ?>
+            <p class="mt-4">Tidak ada data ditemukan untuk bulan dan tahun yang dipilih.</p>
         <?php endif; ?>
     </div>
 </body>
