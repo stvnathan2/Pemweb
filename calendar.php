@@ -7,23 +7,24 @@ if (!isset($_SESSION['username'])) {
 include("koneksiuser.php");
 $conn = connection();
 
-function getTransactions($conn, $month, $year) {
+function getTransactions($conn, $month, $year, $username) {
     $stmt = $conn->prepare('
         SELECT date, 
                SUM(CASE WHEN type = "pemasukan" THEN amount ELSE 0 END) as total_pemasukan,
                SUM(CASE WHEN type = "pengeluaran" THEN amount ELSE 0 END) as total_pengeluaran
         FROM daily_expenses 
-        WHERE MONTH(date) = ? AND YEAR(date) = ?
+        WHERE MONTH(date) = ? AND YEAR(date) = ? AND username = ?
         GROUP BY date
     ');
-    $stmt->bind_param('ii', $month, $year);
+    $stmt->bind_param('iis', $month, $year, $username);
     $stmt->execute();
     return $stmt->get_result();
 }
 
+$username = $_SESSION['username'];
 $current_month = isset($_GET['month']) ? intval($_GET['month']) : date('m');
 $current_year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
-$transactions = getTransactions($conn, $current_month, $current_year);
+$transactions = getTransactions($conn, $current_month, $current_year, $username);
 
 $calendar = [];
 while ($row = $transactions->fetch_assoc()) {

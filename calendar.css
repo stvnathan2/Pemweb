@@ -152,6 +152,8 @@ header {
 }
 
 .calendar-day {
+    width: 187px;
+    height: 97.6px;
     cursor: pointer;
     position: relative;
 }
