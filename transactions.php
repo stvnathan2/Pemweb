@@ -33,6 +33,7 @@ if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
                 echo '<th>Kategori</th>';
                 echo '<th>Tipe</th>';
                 echo '<th>Metode Pembayaran</th>';
+                echo '<th>Detail</th>';
                 echo '</tr>';
                 echo '</thead>';
                 echo '<tbody>';
@@ -43,6 +44,7 @@ if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
                     echo '<td>' . htmlspecialchars($row['category']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['type']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['payment_method']) . '</td>';
+                    echo '<td><a href="detail.php?id=' . htmlspecialchars($row['id']) . '" class="btn btn-primary btn-sm">Detail</a></td>';
                     echo '</tr>';
                 }
                 echo '</tbody>';

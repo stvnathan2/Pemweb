@@ -20,7 +20,7 @@ header {
     z-index: 99;
 }
 
-.logo{
+.logo {
     text-shadow: 
         -1px -1px 0 #4645459a,
         1px -1px 0 #4645459a,
@@ -45,7 +45,7 @@ header {
     margin-left: 40px;
 }
 
-.navigation a::after{
+.navigation a::after {
     content: '';
     position: absolute;
     left: 0;
@@ -59,7 +59,7 @@ header {
     transition: transform .5s;
 }
 
-.navigation a:hover::after{
+.navigation a:hover::after {
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -74,16 +74,21 @@ header {
 
 .container {
     background: #ba55d37c;
-    padding: 20px;
+    padding: 50px;
     border-radius: 10px;
     box-shadow: 0 0 10px #6a1b9a; 
     width: 80%;
     max-width: 1000px;
     overflow-y: auto;
-    max-height: 90vh;
+    max-height: 1000vh;
 }
 
-h2, h3 {
+.cl-2 {
+    font-family: 'Roboto', sans-serif;
+    color: #495057;
+}
+
+.mr-2 {
     font-family: 'Roboto', sans-serif;
     color: #495057;
 }
@@ -160,10 +165,94 @@ h2, h3 {
     text-align: center;
 }
 
-.mr-2 {
+#transactions {
     color: #495057;
 }
 
-#transactions {
-    color: #495057;
+.detail-form {
+    background: #ba55d37c;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #6a1b9a;
+    max-width: 600px;
+    margin: auto;
+}
+
+.detail-form h2 {
+    margin-bottom: 20px;
+}
+
+.detail-form .form-group {
+    margin-bottom: 15px;
+}
+
+.detail-form .form-group label {
+    display: block;
+    font-weight: bold;
+    color: white;
+}
+
+.detail-form .form-group p {
+    background: #6a1b9a;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.detail-form .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background: #6a1b9a;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.detail-form .btn:hover {
+    background: #bb43ee;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.btn-back:hover {
+    background: #0056b3;
+}
+
+.btn-update {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #52f321; 
+}
+
+.btn-delete {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #F44336;
+}
+
+.btn-group {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }

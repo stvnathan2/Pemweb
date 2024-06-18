@@ -1,9 +1,9 @@
 <?php
-// session_start();
-// if (!isset($_SESSION['username'])) {
-//     header("Location: login.php");
-//     exit();
-// }
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
 include("koneksiuser.php");
 $conn = connection();
 
@@ -108,7 +108,7 @@ function generateCalendar($calendar, $month, $year) {
     </header>
     <div class="wrapper">
         <div class="form-box">
-            <h2>Kalender Keuangan Bulan Ini</h2>
+            <h2 class="cl-2">Kalender Keuangan Bulan Ini</h2>
             <form method="GET" action="calendar.php" class="form-inline mb-4">
                 <label for="month" class="mr-2">Pilih Bulan:</label>
                 <select id="month" name="month" class="form-control mr-2" onchange="this.form.submit()">
@@ -128,7 +128,7 @@ function generateCalendar($calendar, $month, $year) {
                 </select>
             </form>
             <?php generateCalendar($calendar, $current_month, $current_year); ?>
-            <h3>Detail Transaksi</h3>
+            <h3 class="cl-2">Detail Transaksi</h3>
             <div id="transactions">Klik pada tanggal untuk melihat detail transaksi.</div>
         </div>
     </div>
