@@ -1,14 +1,21 @@
 <?php
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit();
-}
+// session_start();
+// if (!isset($_SESSION['username'])) {
+//     header("Location: login.php");
+//     exit();
+// }
 include("koneksiuser.php");
 $conn = connection();
 
 function getTransactions($conn, $month, $year) {
-    $stmt = $conn->prepare('SELECT date, type, amount FROM daily_expenses WHERE MONTH(date) = ? AND YEAR(date) = ?');
+    $stmt = $conn->prepare('
+        SELECT date, 
+               SUM(CASE WHEN type = "pemasukan" THEN amount ELSE 0 END) as total_pemasukan,
+               SUM(CASE WHEN type = "pengeluaran" THEN amount ELSE 0 END) as total_pengeluaran
+        FROM daily_expenses 
+        WHERE MONTH(date) = ? AND YEAR(date) = ?
+        GROUP BY date
+    ');
     $stmt->bind_param('ii', $month, $year);
     $stmt->execute();
     return $stmt->get_result();
@@ -21,7 +28,10 @@ $transactions = getTransactions($conn, $current_month, $current_year);
 $calendar = [];
 while ($row = $transactions->fetch_assoc()) {
     $day = date('j', strtotime($row['date']));
-    $calendar[$day][] = $row;
+    $calendar[$day] = [
+        'total_pemasukan' => $row['total_pemasukan'],
+        'total_pengeluaran' => $row['total_pengeluaran']
+    ];
 }
 
 function generateCalendar($calendar, $month, $year) {
@@ -42,9 +52,10 @@ function generateCalendar($calendar, $month, $year) {
         $currentDay = ($day + $firstDayOfMonth - 1) % 7;
         echo '<td class="calendar-day" onclick="showTransactions(' . $day . ')">' . $day;
         if (isset($calendar[$day])) {
-            foreach ($calendar[$day] as $transaction) {
-                echo '<br><span class="badge badge-' . ($transaction['type'] === 'pemasukan' ? 'success' : 'danger') . '">' . $transaction['type'] . ': ' . $transaction['amount'] . '</span>';
-            }
+            $totalPemasukan = $calendar[$day]['total_pemasukan'];
+            $totalPengeluaran = $calendar[$day]['total_pengeluaran'];
+            echo '<br><span class="badge badge-success">Pemasukan: ' . $totalPemasukan . '</span>';
+            echo '<br><span class="badge badge-danger">Pengeluaran: ' . $totalPengeluaran . '</span>';
         }
         echo '</td>';
         if ($currentDay == 6) {
