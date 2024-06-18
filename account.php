@@ -11,13 +11,11 @@ $conn = connection();
 $username = $_SESSION['username'];
 $message = "";
 
-// Proses update profil jika form disubmit
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $namalengkap = $_POST['namalengkap'];
     $email = $_POST['email'];
     $jenis_kelamin = $_POST['jenis_kelamin'];
 
-    // Menangani upload file foto profil
     if (isset($_FILES['foto_profil']) && $_FILES['foto_profil']['error'] == UPLOAD_ERR_OK) {
         $foto_profil = $_FILES['foto_profil']['name'];
         $target_dir = "uploads/";
@@ -39,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Ambil data user dari database
 $query = "SELECT * FROM user WHERE username = '$username'";
 $result = mysqli_query($conn, $query);
 $user = mysqli_fetch_assoc($result);
@@ -55,7 +52,16 @@ $user = mysqli_fetch_assoc($result);
 </head>
 <body>
     <div class="image">
-        <?php if ($user['foto_profil'] != "") { echo "<img src='".$user['foto_profil']."'>"; } ?>
+        <?php 
+        if (!empty($user['foto_profil'])) {
+            $foto_profil_path = $user['foto_profil'];
+            if (file_exists($foto_profil_path)) {
+                echo "<img src='" . $foto_profil_path . "' alt='Foto Profil'>";
+            } else {
+                echo "<p>Foto Profil Tidak Ditemukan</p>";
+            }
+        }
+        ?>
     </div>
     <div class="container">
         <h2>Profil</h2>
