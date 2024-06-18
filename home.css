@@ -1,7 +1,7 @@
 body{
     justify-content: center;
     align-items: center;
-    min-height: 97.9vh;
+    min-height: 97.7vh;
     background: url(bghome.png) no-repeat;
     background-size: cover;
     background-position: center;
@@ -43,7 +43,6 @@ body p b{
     padding: 20px 0;
     width: 350px;
     max-width: 500px;
-    /* background-color: #E9E9E9; */
     color: white;
 }
 
@@ -74,6 +73,29 @@ body p b a:hover{
 
 .menu-box p {
     text-align: center;
+    margin: 0;
+}
+
+.menu-box a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-box a:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.menu-box ion-icon {
+    margin-right: 10px;
 }
 
 .btn-view,
