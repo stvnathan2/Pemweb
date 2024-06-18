@@ -18,7 +18,7 @@
         </nav>
     </header>
 
-    <div class="container mt-5">
+    <div class="container mt-5" style="padding-top: 30px;">
         <form method="post" action="" class="form-inline" oninput="calculateAndDisplayTotal()">
             <div class="form-row">
                 <div class="inline-form-group col-md-4">

@@ -1,5 +1,9 @@
 <?php
 session_start(); 
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
 include 'koneksiuser.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -8,24 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category = $_POST['category'];
     $amount = $_POST['amount'];
     $description = $_POST['description'];
-    $user_id = $_SESSION['user_id']; 
+    $payment_method = $_POST['payment_method'];
+    $account = $_POST['account'];
+    $username = $_SESSION['username'];
+    $file_path = null;
 
-    $conn = connection();
-    
-    $sql = "INSERT INTO daily_expenses (amount, type, category, date, description, user_id) 
-            VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("dssssi", $amount, $type, $category, $date, $description, $user_id);
-
-    if ($stmt->execute()) {
-        echo "Data berhasil disimpan.";
-    } else {
-        echo "Terjadi kesalahan: " . $stmt->error;
-    }
-
-    $stmt->close();
-    $conn->close();
-    
     if (isset($_FILES['file'])) {
         $file = $_FILES['file'];
         
@@ -39,41 +30,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         
         if (file_exists($target_file)) {
-            echo "Sorry, file already exists.<br>";
             $uploadOk = 0;
         }
         
         if ($file["size"] > 2000000) {
-            echo "Sorry, your file is too large.<br>";
             $uploadOk = 0;
         }
         
         if($fileType != "jpg" && $fileType != "png" && $fileType != "pdf" ) {
-            echo "Sorry, only JPG, PNG & PDF files are allowed.<br>";
             $uploadOk = 0;
         }
         
         if ($uploadOk == 0) {
-            echo "Sorry, your file was not uploaded.<br>";
         } else {
             if (move_uploaded_file($file["tmp_name"], $target_file)) {
-                echo "The file ". htmlspecialchars(basename($file["name"])). " has been uploaded.<br>";
-
-                $conn = connection();
-                $stmt = $conn->prepare("INSERT INTO receipts (user_id, file_path) VALUES (?, ?)");
-                $stmt->bind_param("is", $user_id, $target_file);
-                if ($stmt->execute()) {
-                    echo "File record saved successfully<br>";
-                } else {
-                    echo "Error: " . $stmt->error . "<br>";
-                }
-                $stmt->close();
-                $conn->close();
-            } else {
-                echo "Sorry, there was an error uploading your file.<br>";
+                $file_path = $target_file;
             }
         }
     }
+
+    $conn = connection();
+    
+    $sql = "INSERT INTO daily_expenses (amount, type, category, date, description, payment_method, account, file_path, username) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("dssssssss", $amount, $type, $category, $date, $description, $payment_method, $account, $file_path, $username);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Data berhasil disimpan.');</script>";
+    } else {
+        echo "<script>alert('Terjadi kesalahan: " . $stmt->error . "');</script>";
+    }
+
+    $stmt->close();
+    $conn->close();
 }
 ?>
 
@@ -84,6 +74,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Pemasukan dan Pengeluaran</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function formatAndSaveNominal(input) {
+            let originalValue = input.value.replace(/\D/g, '');
+
+            let formattedValue = new Intl.NumberFormat().format(originalValue);
+
+            document.getElementById('amount_original').value = originalValue;
+
+            input.value = formattedValue;
+        }
+
+        const pemasukanOptions = [
+            { value: "gaji", text: "Gaji" },
+            { value: "hadiah", text: "Hadiah" },
+            { value: "lainnya", text: "Lainnya" }
+        ];
+
+        const pengeluaranOptions = [
+            { value: "transportasi", text: "Transportasi" },
+            { value: "belanja", text: "Belanja" },
+            { value: "makanan", text: "Makanan" },
+            { value: "lainnya", text: "Lainnya" }
+        ];
+
+        function updateCategoryOptions() {
+            const typeSelect = document.getElementById('type');
+            const categorySelect = document.getElementById('category');
+            const selectedType = typeSelect.value;
+
+            categorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
+
+            let options = selectedType === 'pemasukan' ? pemasukanOptions : pengeluaranOptions;
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.value;
+                opt.textContent = option.text;
+                categorySelect.appendChild(opt);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCategoryOptions();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+
+            updateCategoryOptions();
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -98,8 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <main>
         <div class="container">
-            <section class="input-form">
-                <h2>Input Pemasukan dan Pengeluaran</h2>
+            <section class="input-form" style="width: 400px;">
                 <form action="input.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="date">Tanggal</label>
@@ -108,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     
                     <div class="form-group">
                         <label for="type">Tipe</label>
-                        <select id="type" name="type" required>
+                        <select id="type" name="type" required onchange="updateCategoryOptions()" value="pemasukan">
                             <option value="pemasukan">Pemasukan</option>
                             <option value="pengeluaran">Pengeluaran</option>
                         </select>
@@ -116,12 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     
                     <div class="form-group">
                         <label for="category">Kategori</label>
-                        <input type="text" id="category" name="category" required>
+                        <select id="category" name="category" required>
+                            <option value="">Pilih Kategori</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
                         <label for="amount">Nominal</label>
-                        <input type="number" step="0.01" id="amount" name="amount" required>
+                        <input type="text" id="amount_display" name="amount_display" required autocomplete="off" oninput="formatAndSaveNominal(this)">
+                        <input type="hidden" id="amount_original" name="amount">
                     </div>
                     
                     <div class="form-group">
@@ -130,8 +173,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <div class="form-group">
-                        <label for="file">Upload Receipt:</label>
-                        <input type="file" id="file" name="file" required>
+                        <label for="payment_method">Metode Pembayaran</label>
+                        <input type="text" id="payment_method" name="payment_method" required autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="account">Akun</label>
+                        <input type="text" id="account" name="account" required autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Unggah Struk</label>
+                        <input type="file" id="file" name="file">
                     </div>
                     
                     <button type="submit">Submit</button>
@@ -139,9 +192,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </section>
         </div>
     </main>
-    
-    <footer>
-        <p>&copy; 2024 Money Mastery. All rights reserved.</p>
-    </footer>
 </body>
 </html>

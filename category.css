@@ -8,6 +8,10 @@ body{
     font-family: Arial, sans-serif;
 }
 
+.container {
+    padding-top: 100px;
+}
+
 header{
     position: fixed;
     top: 0;
@@ -20,7 +24,23 @@ header{
     z-index: 99;
 }
 
+.logo{
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
+    font-size: 30px;
+    color: white !important;
+    Text-Decoration: None !important; 
+}
+
 .navigation a {
+    text-shadow: 
+        -1px -1px 0 #4645459a,
+        1px -1px 0 #4645459a,
+        -1px 1px 0 #4645459a,
+        1px 1px 0 #4645459a;
     position: relative;
     font-size: 16px;
     color: white;
@@ -118,7 +138,7 @@ body p b{
     line-height: 57px;
 }
 
-a{
+.container a{
     font-weight: bold;
     text-decoration: none;
     display: inline-block;
@@ -127,7 +147,7 @@ a{
     transition: background-color 0.5s ease;
 }
 
-a:hover{
+.container a:hover{
     background: linear-gradient(90deg, #a489c9, #d7bee7);
 }
 
