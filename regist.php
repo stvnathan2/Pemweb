@@ -9,31 +9,50 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // query   
+    $check_query = "SELECT * FROM user WHERE username='$username'";
+    $check_result = mysqli_query(connection(), $check_query);
 
-    $query = "INSERT INTO user (username, namalengkap, email, password) 
-    VALUES ('$username', '$namalengkap', '$email', '$password')";
-
-    // Eksekusi Query
-
-    $result = mysqli_query(connection(), $query);
-    if($result){
-        header("Location: login.php");
+    if(mysqli_num_rows($check_result) > 0){
+        $status = 'exists';
     } else {
-        $status = 'Err';
+        $query = "INSERT INTO user (username, namalengkap, email, password) 
+        VALUES ('$username', '$namalengkap', '$email', '$password')";
+
+        $result = mysqli_query(connection(), $query);
+        if($result){
+            header("Location: login.php");
+        } else {
+            $status = 'Err';
+        }
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible"content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun MoneyMastery</title>
-    <link rel="stylesheet"href="regist.css">
+    <link rel="stylesheet" href="regist.css">
+    <script src="script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        var status = '<?php echo $status; ?>';
+        if (status === 'exists') {
+            alert('Username sudah ada. Silakan gunakan username lain.');
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            window.location.href = 'login.php';
+        });
+
+        document.getElementById('btn').addEventListener('click', function() {
+            window.location.href = 'home.php';
+        });
+    </script>
 </head>
 
 <body>
@@ -50,7 +69,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <div class="wrapper">
         <a href="index.php"><span class="icon-close"><ion-icon name="close"></ion-icon></span></a>
-        
         <div class="form-box login">
             <h2>Daftar Akun</h2>
             <form action="regist.php" method="post">
@@ -74,9 +92,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <input type="password" name="password" required>
                     <label>Kata Sandi</label>
                 </div>
-                <!-- <div class="remember-forgot">
-                    <label><input type="checkbox">Saya menyetujui seluruh syarat & ketentuan</label>
-                </div> -->
+                <div class="remember-forgot">
+                    <label><input type="checkbox" name="terms" required>Saya menyetujui seluruh syarat & ketentuan</label>
+                </div>
                 <button type="submit" class="btn">Daftar</button>
                 <div class="login-register">
                     <p>Sudah punya akun? <a href="login.php" class="register-link">Masuk</a></p>
@@ -84,20 +102,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </form>
         </div>
     </div>
-
-    <script src="script.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script>
-    document.getElementById('loginBtn').addEventListener('click', function() {
-        window.location.href = 'login.php';
-    });
-    </script>
-        <script>
-    document.getElementById('btn').addEventListener('click', function() {
-        window.location.href = 'home.php';
-    });
-    </script>
-
 </body>
 </html>
