@@ -98,7 +98,7 @@ function generateCalendar($calendar, $month, $year) {
     </script>
 </head>
 <body>
-<header>
+    <header>
         <a href="home.php" class="logo">Money Mastery</a>
         <nav class="navigation">
             <a href="tips.php">Tips</a>

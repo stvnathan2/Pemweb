@@ -18,6 +18,8 @@ if (isset($_GET['id'])) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Update Transaksi</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
             <link rel="stylesheet" href="calendar.css">
         </head>
         <body>
@@ -39,32 +41,32 @@ if (isset($_GET['id'])) {
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                             <div class="form-group">
                                 <label for="date">Tanggal:</label>
-                                <input type="date" name="date" value="<?php echo htmlspecialchars($row['date']); ?>" required style="width: 590px;">
+                                <input type="date" name="date" value="<?php echo htmlspecialchars($row['date']); ?>" required style="width: 560px;">
                             </div>
                             
                             <div class="form-group">
                                 <label for="type">Tipe:</label>
-                                <input type="text" name="type" value="<?php echo htmlspecialchars($row['type']); ?>" required style="width: 590px;">
+                                <input type="text" name="type" value="<?php echo htmlspecialchars($row['type']); ?>" required style="width: 560px;">
                             </div>
                             
                             <div class="form-group">
                                 <label for="category">Kategori:</label>
-                                <input type="text" name="category" value="<?php echo htmlspecialchars($row['category']); ?>" required style="width: 590px;">
+                                <input type="text" name="category" value="<?php echo htmlspecialchars($row['category']); ?>" required style="width: 560px;">
                             </div>
                             
                             <div class="form-group">
                                 <label for="amount">Nominal (Rp.):</label>
-                                <input type="text" name="amount" value="<?php echo htmlspecialchars($row['amount']); ?>" required style="width: 590px;">
+                                <input type="text" name="amount" value="<?php echo htmlspecialchars($row['amount']); ?>" required style="width: 560px;">
                             </div>
                             
                             <div class="form-group">
                                 <label for="description">Keterangan:</label>
-                                <textarea name="description" rows="4" required style="width: 590px;"><?php echo htmlspecialchars($row['description']); ?></textarea>
+                                <textarea name="description" rows="4" required style="width: 560px;"><?php echo htmlspecialchars($row['description']); ?></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="payment_method">Metode Pembayaran:</label>
-                                <input type="text" name="payment_method" value="<?php echo htmlspecialchars($row['payment_method']); ?>" required style="width: 590px;">
+                                <input type="text" name="payment_method" value="<?php echo htmlspecialchars($row['payment_method']); ?>" required style="width: 560px;">
                             </div>
 
                             <div class="form-group">
